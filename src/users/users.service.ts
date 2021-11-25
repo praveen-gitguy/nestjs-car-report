@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
@@ -15,12 +19,17 @@ export class UsersService {
     return this.userRepository.save(user);
   }
 
-  findOne(id: string) {
-    return this.userRepository.findOne(id);
+  findOne(email: string) {
+    return this.userRepository.find({ email });
   }
 
   find() {
     return this.userRepository.find();
+  }
+
+  findById(id: string) {
+    if (!id) throw new UnauthorizedException('No user logged in');
+    return this.userRepository.findOne(id);
   }
 
   async update(id: string, attrs: Partial<User>) {
