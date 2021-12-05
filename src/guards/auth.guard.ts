@@ -1,8 +1,9 @@
 import { CanActivate, ExecutionContext } from '@nestjs/common';
 
 export class AuthGuard implements CanActivate {
-  canActivate(ctx: ExecutionContext) {
-    const request = ctx.switchToHttp().getRequest();
+  canActivate(context: ExecutionContext) {
+    const request = context.switchToHttp().getRequest();
+
     return request.session.userId;
   }
 }
